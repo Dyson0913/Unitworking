@@ -1,11 +1,6 @@
 package tests
 {
-	import asunit.framework.Async;
-	import asunit.framework.IAsync;
-	import asunit.framework.TestCase;
-	import asunit.framework.TimeoutCommand;
-	import asunit.events.TimeoutCommandEvent;
-	import com.adobe.webapis.events.ServiceEvent;
+	import asunit.framework.TestCase;			
 	import ConnectModule.websocket.WebSoketComponent;
 	
 	import flash.display.MovieClip;
@@ -30,12 +25,7 @@ package tests
 	{
 		private var _context:Context;
 		private var _mc:MovieClip;
-		private var _instance:LoadingView;		
-
-		[Inject]
-        public var asyn:IAsync;
-		
-		public var _socket:WebSoketComponent = new WebSoketComponent();
+		private var _instance:LoadingView;
 		
 		public function LoadingView_Test(testMethod:String = null) 
 		{
@@ -47,9 +37,7 @@ package tests
 		
 		protected override function setUp():void 
 		{
-			super.setUp();
-			asyn = new Async();			
-         
+			super.setUp();			
 			addChild(_context.getObjectByType(LoadingView) as LoadingView);
 			_instance = _context.getObject("Enter") as LoadingView;
         }
@@ -58,7 +46,6 @@ package tests
 		{
 			super.tearDown();
             //_instance = null;
-			asyn = null;
         }
 		
 		public function testInstantiated():void 
@@ -69,38 +56,15 @@ package tests
 		
 		public function test_first():void 
 		{
-			_instance.FirstLoad();
-			
-			//非同步測試 上方命令執行完,server 己回傳封包, 呼叫fun 以確認資料正確性
-			var connect:Function = asyn.add(_instance.connet, 6000);
-			(asyn.getPending()[0] as TimeoutCommand).addEventListener(TimeoutCommandEvent.CALLED , onCheck);
-            (asyn.getPending()[0] as TimeoutCommand).addEventListener(TimeoutCommandEvent.TIMED_OUT , onTimeout);
-          
-			
-			setTimeout(connect, 4000);
+			utilFun.Log("test_first");
+			_instance.FirstLoad();		
         }
 		
-		private function onCheck(e:TimeoutCommandEvent):void
-        {
-            //someAsserttest
-			utilFun.Log("onCheck");
-			//asyn.cancelPending();
-			utilFun.Log("onCheck2");
-			//進入某畫面
-			
-			//_socket.Connect
-			//var connect:Function = asyn.add(_instance.connet, 1000);
-			//(asyn.getPending()[0] as TimeoutCommand).addEventListener(TimeoutCommandEvent.CALLED , onCall);
-            //(asyn.getPending()[0] as TimeoutCommand).addEventListener(TimeoutCommandEvent.TIMED_OUT , onTimeout);
-			
+		public function test_first():void 
+		{
+			utilFun.Log("test_first");
+			_instance.FirstLoad();		
         }
-		
-		public function onTimeout(e:TimeoutCommandEvent):void
-        {
-            //timeout
-			utilFun.Log("onTimeout");
-        }
-		
 		
     }   
 		

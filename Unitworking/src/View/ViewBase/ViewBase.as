@@ -1,9 +1,11 @@
-package View.ViewBase 
+package View.ViewBase
 {
+	import Model.Model;
+	import Command.DataOperation;
 	import flash.display.MovieClip;
-	import flash.display.Sprite;
-	import Model.*;
-	import View.GameView.ViewState;
+	import flash.display.Sprite;		
+	import Model.valueObject.Intobject;
+	
 	/**
 	 * ...
 	 * @author hhg
@@ -19,6 +21,9 @@ package View.ViewBase
 		[Inject]
 		public var _model:Model;
 		
+		[Inject]
+		public var _opration:DataOperation;
+		
 		public var _View:MovieClip;
 		
 		public function ViewBase() 
@@ -27,13 +32,13 @@ package View.ViewBase
 		}
 		
 		//[MessageHandler]
-		public function EnterView (View:ViewState):void
+		public function EnterView (View:Intobject):void
 		{
 			
 		}
 		
 		
-		public function ExitView(View:ViewState):void
+		public function ExitView(View:Intobject):void
 		{
 			
 		}

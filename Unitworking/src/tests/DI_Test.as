@@ -59,10 +59,17 @@ package tests
 			
         }
 		
-		//public function test_():void 
-		//{
-			//
-        //} 
+		public function test_clean():void 
+		{
+			_instance.putValue(3, 10.5);
+			assertEquals( 10.5, _instance.getValue(3));
+			
+			_instance.putValue(4, true);
+			assertTrue( _instance.getValue(4) == true);
+			
+			_instance.clean()
+			assertEquals( 0, _instance.lenth());
+        } 
     }   
 		
 

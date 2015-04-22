@@ -1,5 +1,6 @@
 package View.GameView
 {	
+	import Command.ViewCommand;
 	import ConnectModule.websocket.WebSoketInternalMsg;
 	import flash.display.Bitmap;
 	import flash.display.MovieClip;
@@ -7,7 +8,9 @@ package View.GameView
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import Model.*	
+	import Model.valueObject.StringObject;
 	
+	import Model.valueObject.Intobject;
 	import View.Viewutil.MultiObject;
 	import View.ViewBase.ViewBase;
 	import util.utilFun;	
@@ -28,14 +31,15 @@ package View.GameView
 		
 			
 		public function FirstLoad():void
-		{
-			dispatcher(new ViewState(ViewState.Loading, ViewState.ENTER) );
+		{			
+			dispatcher(new Intobject(modelName.Loading, ViewCommand.SWITCH) );			
 		}
 		
-		[MessageHandler(selector="Enter")]
-		override public function EnterView (View:ViewState):void
+		[MessageHandler(type = "Model.valueObject.Intobject",selector="EnterView")]
+		override public function EnterView (View:Intobject):void
 		{
-			if (View._view != ViewState.Loading) return;
+			if (View.Value != modelName.Loading) return;
+			utilFun.Log("loadingView enter");
 			
 			_View = new MovieClip();
 			addChild(_View);
@@ -48,12 +52,13 @@ package View.GameView
 			dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.CONNECT));
 		}
 		
-		[MessageHandler(selector="Leave")]
-		override public function ExitView(View:ViewState):void
+		[MessageHandler(type = "Model.valueObject.Intobject",selector="LeaveView")]
+		override public function ExitView(View:Intobject):void
 		{
-			if (View._view != ViewState.Loading) return;
-			utilFun.ClearContainerChildren(_View);
-			utilFun.Log("LoadingView ExitView");
+			if (View.Value != modelName.Loading) return;
+			utilFun.Log("loading view exit");
+			//if (View._view != ViewState.Loading) return;
+			//utilFun.ClearContainerChildren(_View);			
 		}
 		
 		

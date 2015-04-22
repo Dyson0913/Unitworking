@@ -69,12 +69,13 @@ package Model
 			return _ItemList.slice(_ItemPageIdx, _ItemPageIdx+ Math.min(EndIdx,_PageAmount) );
 		}
 		
-		public function  GetOneDate(idx:int):*
+		public function  GetPageItem(idx:int):*
 		{			
+			if ( idx >= _PageAmount ) return null;
+			if ( idx < 0 ) return null;
+			
 			return _ItemList[(_ItemPageIdx+idx)];
 		}
-
-		//TODO SetSelectItem的必要,非即時性才需要的功能
 	}
 
 }

@@ -2,6 +2,9 @@ package tests
 {
 	import asunit.framework.TestCase;
 	import Model.PageSlipModel;
+	
+	import com.adobe.utils.ArrayUtil;
+	
 	/**
 	 * ...
 	 * @author hhg4092
@@ -70,6 +73,35 @@ package tests
 			assertEquals( "1/4", _instance.CurrentPage("/"));
 			
         }
+		
+		public function test_idx_limit():void 
+		{
+		   	var arr:Array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+			
+			_instance.pageSetting(arr, 3);
+			
+			//limit test
+			assertEquals(null, _instance.GetPageItem(3)  );
+			assertEquals(null, _instance.GetPageItem(4)  );
+			assertEquals(null, _instance.GetPageItem(-1)  );
+		}
+		
+		public function test_idx_check():void 
+		{
+		   	var arr:Array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+			
+			_instance.pageSetting(arr, 3);
+			
+			
+			_instance.NextPage();
+			assertTrue(ArrayUtil.arraysAreEqual( [4, 5, 6] , _instance.GetPageDate() ) );
+			assertEquals(6, _instance.GetPageItem(2)  );
+			
+			_instance.NextPage();
+			assertTrue(ArrayUtil.arraysAreEqual( [7,8,9] , _instance.GetPageDate() ) );
+			assertEquals(null, _instance.GetPageItem(3)  );			
+		}
+		
 		
 	}
 

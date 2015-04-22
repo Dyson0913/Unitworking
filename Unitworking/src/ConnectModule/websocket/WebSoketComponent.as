@@ -12,8 +12,7 @@ package ConnectModule.websocket
 	
 	import Model.ModelEvent;
 	import Model.MsgQueueModel;
-	
-	import View.GameView.ViewState;
+		
 	import View.GameView.CardType;
 	
 	import util.utilFun;	
@@ -143,7 +142,7 @@ package ConnectModule.websocket
                         dispatcher( new ValueObject(playercard, "playerpoker") );
                         dispatcher( new ValueObject(playercard, "bankerpoker") );
 						
-						dispatcher(new ViewState(ViewState.Bet,ViewState.ENTER) );
+						//dispatcher(new ViewState(ViewState.Bet,ViewState.ENTER) );
 						//dispatcher(new ViewState(ViewState.Loading,ViewState.LEAVE) );
 						
 						break;

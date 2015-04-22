@@ -4,6 +4,8 @@ package View.GameView
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import Model.modelName;
+	import Model.valueObject.Intobject;
 	
 	import View.Viewutil.MultiObject;
 	import View.Viewutil.SingleObject;
@@ -32,10 +34,12 @@ package View.GameView
 			utilFun.Log("LobbView");
 		}
 		
-		[MessageHandler(selector="Enter")]
-		override public function EnterView (View:ViewState):void
+		[MessageHandler(type = "Model.valueObject.Intobject",selector="EnterView")]
+		override public function EnterView (View:Intobject):void
 		{
-			if (View._view != ViewState.Lobb) return;
+			if (View.Value != modelName.Lobby) return;
+			utilFun.Log("LobbyView enter");
+			//if (View._view != ViewState.Lobb) return;
 			
 			//載入新VIEW
 			LobbView = utilFun.GetClassByString("LobbyView");
@@ -112,11 +116,11 @@ package View.GameView
 			//utilFun.SetText(LobbView["_Page"], _LobbyModel._pageModel.CurrentPage("/") );
 		}
 			
-		[MessageHandler(selector="Leave")]
-		override public function ExitView(View:ViewState):void
-		{
-			if (View._view != ViewState.Lobb) return;
-			utilFun.ClearContainerChildren(_View);
+		[MessageHandler(type = "Model.valueObject.Intobject",selector="LeaveView")]
+		override public function ExitView(View:Intobject):void
+		{			
+			if (View.Value != modelName.Lobby) return;
+			//utilFun.ClearContainerChildren(_View);
 			utilFun.Log("lobby ExitView");
 		}
 		
