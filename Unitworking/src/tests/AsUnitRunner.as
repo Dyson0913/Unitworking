@@ -1,6 +1,7 @@
 package tests
 {
-
+    import tests.AllTests;
+	import tests.DI_Test;
     import asunit.core.TextCore;
     import flash.display.MovieClip;
 
@@ -12,7 +13,7 @@ package tests
         public function AsUnitRunner() {
             core = new TextCore();
 			core.textPrinter.hideLocalPaths = true;
-            core.start(AllTests, null, this);
+            core.start( AllTests, null, this);
         }
     }
 }
