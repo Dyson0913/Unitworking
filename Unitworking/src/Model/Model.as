@@ -18,17 +18,18 @@ package Model
 		
 		[MessageHandler(type = "Model.ValueObject")]
 		public function Value(va:ValueObject):void
-		{
+		{			
 			putValue(va.selector, va.Value);
 		}
 		
-		public function putValue(name:String,ob:*):void
+		public function putValue(name:*,ob:*):void
 		{
 			_di.putValue(name, ob);
 		}
 		
-		public function getValue(name:String):*
+		public function getValue(name:*):*
 		{
+			if ( _di.getValue(name) == undefined) return null;
 			return _di.getValue(name);
 		}
 	}

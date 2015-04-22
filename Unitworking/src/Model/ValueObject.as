@@ -10,9 +10,9 @@ package Model
 		public var Value:*;
 		
 		[Selector]
-		public var selector:String
+		public var selector:*
 		
-		public function ValueObject(ob:*,selec:String) 
+		public function ValueObject(ob:*,selec:*) 
 		{
 			Value = ob;
 			selector = selec;

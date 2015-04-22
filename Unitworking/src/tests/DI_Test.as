@@ -57,6 +57,8 @@ package tests
 			_instance.putValue(5, [10, 11, 12, 13]);
 			assertTrue(ArrayUtil.arraysAreEqual( [10, 11, 12, 13] , _instance.getValue(5) ) );
 			
+			_instance.putValue(7, "no");
+			assertEquals( null, _instance.getValue(8));
         }
 		
 		public function test_clean():void 

@@ -7,11 +7,12 @@ package ConnectModule.websocket
 	import com.adobe.serialization.json.JSON	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import flash.net.registerClassAlias;
+	import flash.utils.ByteArray;
 	import flash.system.Security;
-	import Model.ValueObject;
+	import Model.*;	
 	
-	import Model.ModelEvent;
-	import Model.MsgQueueModel;
+	import Model.valueObject.*;
 		
 	import View.GameView.CardType;
 	
@@ -32,6 +33,9 @@ package ConnectModule.websocket
 		[Inject]
 		public var _MsgModel:MsgQueueModel;
 		
+		[Inject]
+		public var _BetModel:BetModel;
+		
 		private var websocket:WebSocket;
 		
 		public function WebSoketComponent() 
@@ -42,7 +46,6 @@ package ConnectModule.websocket
 		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="connect")]
 		public function Connect():void
 		{
-			utilFun.Log("connect");
 			websocket = new WebSocket("ws://106.186.116.216:5000/gamesocket", "");
 			websocket.addEventListener(WebSocketEvent.OPEN, handleWebSocket);
 			websocket.addEventListener(WebSocketEvent.CLOSED, handleWebSocket);
@@ -128,22 +131,23 @@ package ConnectModule.websocket
 					{						
 						//進入 遊戲,得到第一個畫面(不論半途或一開始
 						
-						dispatcher(new ValueObject( result.inside_game_info.player_info.nickname,"nickname") );
-						dispatcher(new ValueObject( result.inside_game_info.player_info.userid,"uuid") );
-						dispatcher(new ValueObject( result.inside_game_info.player_info.credit,"credit") );
+						dispatcher(new ValueObject( result.inside_game_info.player_info.nickname,modelName.NICKNAME) );
+						dispatcher(new ValueObject( result.inside_game_info.player_info.userid,modelName.UUID) );
+						dispatcher(new ValueObject( result.inside_game_info.player_info.credit,modelName.CREDIT) );
 						
-						dispatcher(new ValueObject(  result.inside_game_info.remain_time,"remain_time") );						
-						dispatcher(new ValueObject(  result.inside_game_info.games_state, "games_state") );
+						dispatcher(new ValueObject(  result.inside_game_info.remain_time,modelName.REMAIN_TIME) );						
+						dispatcher(new ValueObject(  result.inside_game_info.games_state, modelName.GAMES_STATE) );
 						
 						//utilFun.Log("time =" + result.inside_game_info.remain_time);
 						
-						var playercard:Array = result.inside_game_info.game_info["player_card_list"];
-						var bankcard:Array = result.inside_game_info.game_info["banker_card_list"];
-                        dispatcher( new ValueObject(playercard, "playerpoker") );
-                        dispatcher( new ValueObject(playercard, "bankerpoker") );
+                        dispatcher( new ValueObject(result.inside_game_info.game_info["player_card_list"], modelName.PLAYER_POKER) );
+                        dispatcher( new ValueObject(result.inside_game_info.game_info["banker_card_list"], modelName.BANKER_POKER) );
+						
 						
 						//dispatcher(new ViewState(ViewState.Bet,ViewState.ENTER) );
 						//dispatcher(new ViewState(ViewState.Loading,ViewState.LEAVE) );
+						dispatcher(new ModelEvent("playerpoker"));
+						dispatcher(new ModelEvent("bankerpoker"));
 						
 						break;
 					}
@@ -151,24 +155,26 @@ package ConnectModule.websocket
 					case Message.MSG_TYPE_STATE_INFO:
 					{					  
 					  
-					  dispatcher(new ValueObject(  result.games_state, "games_state") );
-					  dispatcher(new ValueObject(  result.remain_time, "remain_time") );
+					  dispatcher(new ValueObject(  result.games_state, modelName.GAMES_STATE) );
+					  dispatcher(new ValueObject(  result.remain_time,modelName.REMAIN_TIME) );
 					  dispatcher(new ModelEvent("update_remain_time"));
 					   break;
 					}
 					
 					case Message.MSG_TYPE_GAME_OPEN_INFO:
 					{
-						dispatcher(new ValueObject(  result.games_state, "games_state") );
+						dispatcher(new ValueObject(  result.games_state, modelName.GAMES_STATE) );
                         var card:Array = result.card_info["card_list"];
                         var card_type:int = result.card_info["card_type"];
-						if (  result.card_info["card_type"] == CardType.PLAYER)
+						if ( card_type == CardType.PLAYER)
 						{
-							dispatcher( new ValueObject( card, "playerpoker") );
+							dispatcher( new ValueObject( card, modelName.PLAYER_POKER) );
+							dispatcher(new ModelEvent("playerpoker"));
 						}
 						else if ( card_type == CardType.BANKER)
 						{							
-						    dispatcher( new ValueObject(card, "bankerpoker") );
+						    dispatcher( new ValueObject(card, modelName.BANKER_POKER) );
+							dispatcher(new ModelEvent("bankerpoker"));
 						}
 						
 						break;
@@ -188,13 +194,13 @@ package ConnectModule.websocket
 					}
 					case Message.MSG_TYPE_ROUND_INFO:
 					{
-						dispatcher( new ValueObject(result.bet_amount,"bet_amount"));
-						dispatcher( new ValueObject(result.settle_amount,"settle_amount"));
+						dispatcher( new ValueObject(result.bet_amount,modelName.BET_AMOUNT));
+						dispatcher( new ValueObject(result.settle_amount,modelName.SETTLE_AMOUNT));
 						
-						dispatcher(new ValueObject( result.player_info.credit,"credit") );
+						dispatcher(new ValueObject( result.player_info.credit,modelName.CREDIT) );
 						
-						dispatcher( new ValueObject(result.bet_type, "round_result"));
-						
+						dispatcher( new ValueObject(result.bet_type, modelName.ROUND_RESULT));
+						dispatcher(new ModelEvent("round_result"));
 						
 						break;
 					}
@@ -204,13 +210,13 @@ package ConnectModule.websocket
 		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="Bet")]
 		public function SendBet():void
 		{
-			//var bet:Object = { "message_type":Message.MSG_TYPE_BET, 
-			                               //"serial_no":0,
-										   //"game_type":1,
-										   //"bet_type":_BetModel._BetType,
-										   //"amount":_BetModel._Betcredit };
-										   //
-			//SendMsg(bet);
+			var bet:Object = { "message_type":Message.MSG_TYPE_BET, 
+			                               "serial_no":0,
+										   "game_type":1,
+										   "bet_type":_BetModel._BetType,
+										   "amount":_BetModel._Betcredit };
+										   
+			SendMsg(bet);
 		}
 		
 		public function SendMsg(msg:Object):void 

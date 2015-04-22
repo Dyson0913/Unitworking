@@ -1,6 +1,7 @@
 package util 
 {
 	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -32,6 +33,21 @@ package util
 			var mc:MovieClip = new Temp();	
 			mc.name = sClassName;
 			return mc;
+		}
+		
+		public static function prepare(name:*, ob:*,di:DI, container:DisplayObjectContainer):*
+		{
+			if (di.getValue(name)== null) 
+			{
+				container.addChild(ob);
+				di.putValue(name, ob);
+			}
+			else
+			{
+				return di.getValue(name);
+			}
+			
+			return ob;
 		}
 		
 		public	static function Createitem(text:String,color:uint,align:String = TextFieldAutoSize.LEFT):TextField

@@ -77,6 +77,29 @@ package View.Viewutil
 			Listen();
 		}
 		
+		public function CreateByObject(ItemNum:int,Ob:*,StartX:Number,StartY:Number,RowCnt:int,Xdiff:Number,Ydiff:Number,ItemName:String,Container:MovieClip):void
+		{			
+			for (var i:int = 0 ; i < ItemNum; i++)
+			{
+				var mc:SpriteSheet = new SpriteSheet(Ob, 79, 123)
+				
+				mc.x = StartX + (i % RowCnt * Xdiff);
+				mc.y = StartY + ( Math.floor(i / RowCnt) * Ydiff);
+				
+				if (CustomizedFun != null)
+				{
+					CustomizedFun(mc, i,CustomizedData);
+				}
+				
+				mc.name = ItemName + i;
+				_ItemName = ItemName;
+				ItemList.push(mc);
+				Container.addChild(mc);
+			}
+			_Container = Container;
+			Listen();
+		}
+		
 		public function FlushObject():void
 		{
 			var ItemNum:int = ItemList.length;

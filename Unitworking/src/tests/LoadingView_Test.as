@@ -1,6 +1,6 @@
 package tests
 {
-	import asunit.framework.TestCase;			
+	import asunit.framework.TestCase;
 	import ConnectModule.websocket.WebSoketComponent;
 	
 	import flash.display.MovieClip;
@@ -12,7 +12,7 @@ package tests
 	import org.spicefactory.parsley.core.context.Context;
 	import org.spicefactory.parsley.asconfig.*;
 	
-	import View.GameView.LoadingView;
+	import View.GameView.*;
 	import Model.*;
 	
 	/**
@@ -37,8 +37,11 @@ package tests
 		
 		protected override function setUp():void 
 		{
-			super.setUp();			
+			super.setUp();						
 			addChild(_context.getObjectByType(LoadingView) as LoadingView);
+			//addChild(_context.getObjectByType(Lobby) as Lobby);
+			addChild(_context.getObjectByType(betView) as betView);
+			//addChild(_context.getObjectByType(HudView) as HudView);
 			_instance = _context.getObject("Enter") as LoadingView;
         }
 		
@@ -58,14 +61,7 @@ package tests
 		{
 			utilFun.Log("test_first");
 			_instance.FirstLoad();		
-        }
-		
-		public function test_first():void 
-		{
-			utilFun.Log("test_first");
-			_instance.FirstLoad();		
-        }
-		
+        }		
     }   
 		
 

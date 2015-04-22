@@ -4,6 +4,7 @@ package
 	import Command.DataOperation;
 	import Command.ViewCommand;
 	import flash.display.MovieClip;
+	import Model.BetModel;
 	import Model.Model;
 	import Model.MsgQueueModel;
 	import org.spicefactory.parsley.core.registry.ObjectDefinition;
@@ -20,14 +21,18 @@ package
 		//要unit test 就切enter來達成
 		
 		//singleton="false"
-		[ObjectDefinition(id="Enter")]
-		public var _LoadingView:LoadingView = new LoadingView();
 		
+		public var _LoadingView:LoadingView = new LoadingView();		
 		public var _Lobby:Lobby = new Lobby();
 		public var _hud:HudView = new HudView();
 		
+		[ObjectDefinition(id="Enter")]
+		public var _bet:betView = new betView();
+		
+		
 		//model
 		public var _MsgModel:MsgQueueModel = new MsgQueueModel();
+		public var _betmodel:BetModel = new BetModel();
 		public var _model:Model = new Model();
 		
 		//connect module

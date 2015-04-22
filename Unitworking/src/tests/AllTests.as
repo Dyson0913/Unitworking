@@ -15,7 +15,8 @@ package  tests
 			addTest(new DI_Test());
 			addTest(new PageSlipModel_Test());			
 			//addTest(new ViewCommand_Test());
-			addTest(new LoadingView_Test());
+			//addTest(new LoadingView_Test());
+			addTest(new BetView_Test());
         }
 	}
 

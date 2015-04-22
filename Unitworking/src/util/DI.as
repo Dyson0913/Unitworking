@@ -2,12 +2,11 @@ package util
 {
 	import flash.utils.Dictionary;
 	import Interface.CollectionsInterface;
-	
 	/**
 	 * DI
 	 * @author hhg
 	 */
-	public class DI implements CollectionsInterface
+	public class DI  implements CollectionsInterface
 	{
 		private var _dic:Dictionary = new Dictionary();
 		
@@ -44,7 +43,6 @@ package util
 			}
 			return n;
 		}
-		
 	}
 
 }
