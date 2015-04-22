@@ -1,11 +1,9 @@
 package 
 {
+	import asunit.textui.TestRunner;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import tests.AsUnitRunner;
 	
-	 import asunit.core.TextCore;
-	 
 		
 	import tests.AllTests;
 	/**
@@ -13,8 +11,7 @@ package
 	 * @author hhg
 	 */
 	public class Main extends Sprite 
-	{
-		private var _as:AsUnitRunner;
+	{		
 		 
 		public function Main():void 
 		{
@@ -26,8 +23,9 @@ package
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			// entry point
-			 _as = new AsUnitRunner();
-			 addChild(_as);
+			 var unittests:TestRunner = new TestRunner();
+			stage.addChild(unittests);
+			unittests.start(tests.AllTests, null, TestRunner.SHOW_TRACE);
 		}
 		
 	}

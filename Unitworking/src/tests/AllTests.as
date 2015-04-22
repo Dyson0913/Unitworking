@@ -1,22 +1,20 @@
 package  tests
 {	
-	import tests.DI_Test;
+	import asunit.framework.TestSuite;
+	import tests.*;
 	import tests.LoadingView_Test;
 	
 	/**
 	 * main test , put all your testcase in here 
 	 * @author hhg4092
-	 */
-	//[Suite]
-	public class AllTests
-	{
-		//4.0
-		//public var _ditest:DI_Test;
-		//public var _viewtest:LoadingView_Test;
+	 */	
+	public class AllTests extends TestSuite
+	{	
 		
 		public function AllTests()
         {
-			
+			addTest(new DI_Test());
+			addTest(new PageSlipModel_Test());
         }
 	}
 
