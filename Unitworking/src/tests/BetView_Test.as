@@ -175,8 +175,8 @@ package tests
             assertTrue(ArrayUtil.arraysAreEqual([], _instance._model.getValue(modelName.PLAYER_POKER)) );
             assertTrue(ArrayUtil.arraysAreEqual([], _instance._model.getValue(modelName.BANKER_POKER)) );
 			
-			assertTrue(_instance.plaerType(new Event, 0);
-			assertEquals(gameState.NEW_ROUND, _instance._BetModel._BetType));
+			//assertTrue(_instance.plaerType(new Event, 0);
+			//assertEquals(gameState.NEW_ROUND, _instance._BetModel._BetType));
 		}
 			
 	}

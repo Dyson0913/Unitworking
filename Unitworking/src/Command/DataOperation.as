@@ -18,7 +18,7 @@ package Command
 		[Inject]
 		public var _model:Model;
 		
-		public function DataOperation() 
+		public function DataOperation()
 		{
 			
 		}

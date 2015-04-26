@@ -25,7 +25,7 @@ package View.GameView
 		[Inject]
 		public var _BetModel:BetModel;
 		
-		[Embed(source='../../../assets/poker.png')]
+		[Embed(source='../../assets/poker.png')]
 		private var sheetClass:Class;
 		private var sheet:Bitmap = new sheetClass();
 		
