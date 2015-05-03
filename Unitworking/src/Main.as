@@ -23,7 +23,7 @@ package
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			// entry point
-			 var unittests:TestRunner = new TestRunner();
+			var unittests:TestRunner = new TestRunner();
 			stage.addChild(unittests);
 			unittests.start(tests.AllTests, null, TestRunner.SHOW_TRACE);
 		}

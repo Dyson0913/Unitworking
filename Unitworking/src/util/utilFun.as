@@ -35,11 +35,11 @@ package util
 			return mc;
 		}
 		
-		public static function prepare(name:*, ob:*,di:DI, container:DisplayObjectContainer):*
+		public static function prepare(name:*, ob:*,di:DI, container:DisplayObjectContainer = null):*
 		{
 			if (di.getValue(name)== null) 
 			{
-				container.addChild(ob);
+				if ( container != null) container.addChild(ob);
 				di.putValue(name, ob);
 			}
 			else

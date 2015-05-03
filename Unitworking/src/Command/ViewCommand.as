@@ -12,7 +12,7 @@ package Command
 		[MessageDispatcher]
         public var dispatcher:Function;
 			
-		public static const SWITCH:String = "Switch";		
+		public static const SWITCH:String = "Switch";
 		public static const ADD:String = "add";
 		public static const HIDE:String = "hide";
 		

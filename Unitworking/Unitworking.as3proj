@@ -49,6 +49,7 @@
   <!-- SWC Include Libraries -->
   <includeLibraries>
     <element path="lib\bingo.swc" />
+    <element path="lib\baccarat.swc" />
   </includeLibraries>
   <!-- SWC Libraries -->
   <libraryPaths>

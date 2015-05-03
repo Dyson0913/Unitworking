@@ -1,10 +1,14 @@
 package View.ViewBase
 {
-	import Model.Model;
 	import Command.DataOperation;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
-	import flash.display.Sprite;		
-	import Model.valueObject.Intobject;
+	import flash.display.Sprite;
+	import Model.Model;
+	import util.DI;
+	import util.utilFun;
+	import View.GameView.ViewState;
+	import View.Viewutil.AdjustTool;
 	
 	/**
 	 * ...
@@ -22,25 +26,38 @@ package View.ViewBase
 		public var _model:Model;
 		
 		[Inject]
-		public var _opration:DataOperation;
+		public var _opration:DataOperation;		
 		
-		public var _View:MovieClip;
+		public var _tool:AdjustTool;
+		
+		public var _ViewDI:DI;
 		
 		public function ViewBase() 
 		{
-			
+			_ViewDI = new DI();
 		}
 		
 		//[MessageHandler]
-		public function EnterView (View:Intobject):void
+		public function EnterView (View:int):void
 		{
 			
 		}
 		
 		
-		public function ExitView(View:Intobject):void
+		public function ExitView(View:int):void
 		{
-			
+			utilFun.ClearContainerChildren(Get("_view"));			
+			_ViewDI.clean();
+		}
+		
+		protected function Get(name:*):*
+		{
+			return _ViewDI.getValue(name);
+		}
+		
+		protected function prepare(name:*, ob:*, container:DisplayObjectContainer = null):*
+		{
+			return utilFun.prepare(name,ob , _ViewDI, container);
 		}
 		
 	}
