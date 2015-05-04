@@ -25,6 +25,10 @@ package View.GameView
 		[Inject]
 		public var _BetModel:BetModel;
 		
+		[Inject]
+		public var _Actionmodel:ActionQueueModel;
+		
+		
 		public function betView()  
 		{
 			utilFun.Log("betView");
@@ -34,7 +38,7 @@ package View.GameView
 		{			
 			dispatcher(new ValueObject( "hhg4092",modelName.NICKNAME) );
 			dispatcher(new ValueObject( 4092,modelName.UUID) );
-			dispatcher(new ValueObject( 500,modelName.CREDIT) );			
+			dispatcher(new ValueObject( 50000,modelName.CREDIT) );			
 			dispatcher(new ValueObject(  10,modelName.REMAIN_TIME) );						
 			dispatcher(new ValueObject(  3, modelName.GAMES_STATE) );						
             dispatcher( new ValueObject( [], modelName.PLAYER_POKER) );
@@ -81,6 +85,10 @@ package View.GameView
 			//清除前一畫面
 			utilFun.Log("in to EnterBetview=");			
 			
+			_model.putValue("coin_selectIdx", 0);
+			_model.putValue("coin_list", [100, 500, 1000, 5000, 10000]);
+			_model.putValue("after_bet_credit", 0);
+			
 			//載入新VIEW		
 			prepare("_view",utilFun.GetClassByString("BetSence") , this);
 			
@@ -93,11 +101,6 @@ package View.GameView
 			bankerCon.x = 1100;
 			bankerCon.y = 240;
 			prepare(modelName.BANKER_POKER, new MultiObject());
-			
-			var riverCon:MovieClip = prepare("riverPokerCon", new MovieClip() , this);
-			riverCon.x = 890;
-			riverCon.y = 240;		
-			prepare(modelName.RIVER_POKER, new MultiObject());
 			
 			var zoneCon:MovieClip = prepare("ZoneContainer", new MovieClip() , this);
 			zoneCon.x = 610;
@@ -119,48 +122,12 @@ package View.GameView
 		   var countDown:MovieClip = prepare(modelName.REMAIN_TIME, utilFun.GetClassByString("countDowntimer") , this);
 			countDown.visible = false;
 			countDown.x = 300;
-			countDown.y = 400;
-			
-			var hintmsg:MovieClip = prepare(modelName.HINT_MSG, utilFun.GetClassByString("HintMsg") , this);
-			hintmsg.visible = false;
-			hintmsg.x = 850;
-			hintmsg.y = 430;
+			countDown.y = 400;			
 					
 			//bet區容器
 			var coinzone:MovieClip = prepare("coinzone",  new MovieClip() , this);
 			coinzone.x = 640;
 			coinzone.y = 730;
-			
-			var coin:MovieClip = prepare("coin_1", utilFun.GetClassByString("coin_1") , coinzone);
-			coin.gotoAndStop(3);
-			_betcoin.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,3,0]);
-			_betcoin.Create(coin );
-			_betcoin.mousedown = coindown;
-			
-			
-			var coin2:MovieClip = prepare("coin_2", utilFun.GetClassByString("coin_2") , coinzone);
-			coin2.x = 130;			
-			_betcoin2.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,3,0]);
-			_betcoin2.Create(coin2 );
-			_betcoin2.mousedown = coindown;
-			//
-			var coin3:MovieClip = prepare("coin_3", utilFun.GetClassByString("coin_3") , coinzone);
-			coin3.x = 260;
-			_betcoin3.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,3,0]);
-			_betcoin3.Create(coin3 );
-			_betcoin3.mousedown = coindown;
-			//
-			var coin4:MovieClip = prepare("coin_4", utilFun.GetClassByString("coin_4") , coinzone);
-			coin4.x = 390;			
-			_betcoin4.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,3,0]);
-			_betcoin4.Create(coin4 );
-			_betcoin4.mousedown = coindown;
-			//
-			var coin5:MovieClip = prepare("coin_5", utilFun.GetClassByString("coin_5") , coinzone);
-			coin5.x = 520;			
-			_betcoin5.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,3,0]);
-			_betcoin5.Create(coin5 );
-			_betcoin5.mousedown = coindown;
 			
 			//下注區容器
 			var betzone:MovieClip = prepare("betzone",  new MovieClip() , this);
@@ -226,9 +193,27 @@ package View.GameView
 				else Get("coin_"+(i)).gotoAndStop(1);
 			}			
 			_BetModel._selectIdx = parseInt(s) - 1;
+			_model.putValue("coin_selectIdx", parseInt(s) - 1);
 			
 			return true;
 		}		
+		
+		public function bet():void
+		{
+			var bet:Object = { "betType": CardType.BANKER, 
+			                               "bet_amount":  _opration.array_idx("coin_list", "coin_selectIdx")
+			};
+			
+			dispatcher( new ActionEvent(bet, "bet_action"));
+			
+		}	
+		
+		public function bet_acc():void
+		{
+			utilFun.Log("bet_acc");
+			_betcom.accept_bet();
+			utilFun.Log("bet_acc2");
+		}
 		
 		public function betTypePlayer(e:Event):Boolean
 		{			
@@ -238,7 +223,8 @@ package View.GameView
 				return false;
 			}
 			
-			_BetModel._BetType = CardType.BET_PLAYER;			
+			
+			_BetModel._BetType = CardType.BANKER;			
 			_BetModel.bet();
 			dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET));
 			
@@ -253,7 +239,7 @@ package View.GameView
 				return false;
 			}
 			
-			_BetModel._BetType = CardType.BET_BANKER;
+			_BetModel._BetType = CardType.BANKER;
 			_BetModel.bet();
 			dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET));
 			return true;
@@ -291,42 +277,12 @@ package View.GameView
 		[MessageHandler(type = "Model.ModelEvent", selector = "round_result")]
 		public function round_result():void
 		{
-			var betresult:int = _model.getValue(modelName.ROUND_RESULT);
-			var x:int = 0;
-			var result:MovieClip = _localDI.getValue(modelName.ROUND_RESULT);
-			if ( betresult== CardType.PLAYER) 
-			{		     
-			   utilFun.SetText(result["_Text"], "閒贏 1賠1");
-			   x = _localDI.getValue(modelName.PLAYER_POKER).x
-		    }
-			else if (betresult == CardType.BANKER) 
-			{
-				utilFun.SetText(result["_Text"], "莊贏 1賠1.95");	
-				x = _localDI.getValue(modelName.BANKER_POKER).x
-			}
-			else
-			{
-				utilFun.SetText(result["_Text"], "和 1賠8");
-				x = (_localDI.getValue(modelName.PLAYER_POKER).x + _localDI.getValue(modelName.BANKER_POKER).x) / 2;
-			}
-			result.x = x;
-			
 		
-			
-			//updateCredit();
-			//採用這種方式,呼叫與事件,包成control?
-			utilFun.SetText(Get(modelName.CREDIT)["credit"],_model.getValue(modelName.CREDIT).toString());
-			
-			//updateCredit();
-			
-			dispatcher(new BoolObject(true, "Msgqueue"));
-			Tweener.addCaller(this, { time:4 , count: 1, onUpdate: this.clearn } );
 		}
 		
 		[MessageHandler(type = "Model.ModelEvent", selector = "updateCredit")]
 		public function updateCredit():void
 		{			
-			utilFun.SetText(_localDI.getValue(modelName.CREDIT)["_Text"], "credit =" + _BetModel.creditDisplay().toString());
 			
 		}
 		
@@ -336,23 +292,12 @@ package View.GameView
 			var state:int = _model.getValue(modelName.GAMES_STATE);
 			if ( state  == gameState.NEW_ROUND)
 			{
-				Get(modelName.REMAIN_TIME).visible = true;
-				var time:int = _model.getValue(modelName.REMAIN_TIME);
-				utilFun.SetText(Get(modelName.REMAIN_TIME)["_Text"], utilFun.Format(time, 2));
-				Tweener.addCaller(this, { time:time , count: time, onUpdate:TimeCount , transition:"linear" } );	
 				
-				Tweener.addTween(Get(modelName.HINT_MSG), { alpha:1, time:2, onComplete:FadeIn } );
-				Get(modelName.HINT_MSG).visible = true;
-				Get(modelName.HINT_MSG).gotoAndStop(1);
-				Get(modelName.HINT_MSG).alpha = 0;
+								
 			}
 			else if ( state == gameState.END_BET)
 			{
-				Get(modelName.REMAIN_TIME).visible = false;
-					
-				Get(modelName.HINT_MSG).alpha = 0;
-				Get(modelName.HINT_MSG).gotoAndStop(2);				
-				Tweener.addTween(Get(modelName.HINT_MSG), { alpha:1, time:2, onComplete:FadeIn } );
+				
 			}
 			else if ( state == gameState.START_OPEN)
 			{

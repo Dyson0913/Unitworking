@@ -7,7 +7,7 @@ package Model
 	 * queue package msg
 	 * @author hhg4092
 	 */
-	public class MsgQueueModel 
+	public class MsgQueue 
 	{
 		[MessageDispatcher]
         public var dispatcher:Function;
@@ -28,7 +28,7 @@ package Model
 			}
 		}
 		
-		public function MsgQueueModel() 
+		public function MsgQueue() 
 		{			
 			_isqueueing = false;			
 		}

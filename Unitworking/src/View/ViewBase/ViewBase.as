@@ -1,13 +1,14 @@
 package View.ViewBase
 {
+	import Command.BetCommand;
 	import Command.DataOperation;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import Model.Model;
+	import Model.valueObject.Intobject;
 	import util.DI;
-	import util.utilFun;
-	import View.GameView.ViewState;
+	import util.utilFun;	
 	import View.Viewutil.AdjustTool;
 	
 	/**
@@ -26,7 +27,7 @@ package View.ViewBase
 		public var _model:Model;
 		
 		[Inject]
-		public var _opration:DataOperation;		
+		public var _opration:DataOperation;
 		
 		public var _tool:AdjustTool;
 		
@@ -38,13 +39,13 @@ package View.ViewBase
 		}
 		
 		//[MessageHandler]
-		public function EnterView (View:int):void
+		public function EnterView (View:Intobject):void
 		{
 			
 		}
 		
 		
-		public function ExitView(View:int):void
+		public function ExitView(View:Intobject):void
 		{
 			utilFun.ClearContainerChildren(Get("_view"));			
 			_ViewDI.clean();

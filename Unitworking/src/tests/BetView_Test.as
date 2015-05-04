@@ -58,7 +58,7 @@ package tests
 			utilFun.Log("================= test_model_init");
 			assertEquals("hhg4092", _instance._model.getValue(modelName.NICKNAME));
             assertEquals(4092, _instance._model.getValue(modelName.UUID));
-            assertEquals(500, _instance._model.getValue(modelName.CREDIT));
+            assertEquals(50000, _instance._model.getValue(modelName.CREDIT));
             assertEquals(10, _instance._model.getValue(modelName.REMAIN_TIME));
             assertEquals(3, _instance._model.getValue(modelName.GAMES_STATE));
             assertTrue(ArrayUtil.arraysAreEqual([], _instance._model.getValue(modelName.PLAYER_POKER)) );
@@ -69,15 +69,6 @@ package tests
 		public function test_state_test():void 
 		{
 			utilFun.Log("================= test_state_test");
-			
-            assertEquals("hhg4092", _instance._model.getValue(modelName.NICKNAME));
-            assertEquals(4092, _instance._model.getValue(modelName.UUID));
-            assertEquals(500, _instance._model.getValue(modelName.CREDIT));
-            assertEquals(10, _instance._model.getValue(modelName.REMAIN_TIME));
-            assertEquals(3, _instance._model.getValue(modelName.GAMES_STATE));
-            assertTrue(ArrayUtil.arraysAreEqual([], _instance._model.getValue(modelName.PLAYER_POKER)) );
-            assertTrue(ArrayUtil.arraysAreEqual([], _instance._model.getValue(modelName.BANKER_POKER)) );
-			
 			utilFun.Log("==============");
 			_instance.updata_state_info(gameState.NEW_ROUND);
 			assertEquals(gameState.NEW_ROUND, _instance._model.getValue(modelName.GAMES_STATE));
@@ -95,15 +86,6 @@ package tests
 		public function test_dear_card():void
 		{
 			utilFun.Log("================= test_dear_card");
-			
-			assertEquals("hhg4092", _instance._model.getValue(modelName.NICKNAME));
-            assertEquals(4092, _instance._model.getValue(modelName.UUID));
-            assertEquals(500, _instance._model.getValue(modelName.CREDIT));
-            assertEquals(10, _instance._model.getValue(modelName.REMAIN_TIME));
-            assertEquals(3, _instance._model.getValue(modelName.GAMES_STATE));
-            assertTrue(ArrayUtil.arraysAreEqual([], _instance._model.getValue(modelName.PLAYER_POKER)) );
-            assertTrue(ArrayUtil.arraysAreEqual([], _instance._model.getValue(modelName.BANKER_POKER)) );
-			
 			utilFun.Log("==============");
 			_instance.deal_card(CardType.PLAYER, ["1s"]);
 			assertTrue(ArrayUtil.arraysAreEqual(["1s"], _instance._model.getValue(modelName.PLAYER_POKER)) );
@@ -127,15 +109,6 @@ package tests
 		public function test_result():void
 		{
 			utilFun.Log("================= test_result");
-			
-			assertEquals("hhg4092", _instance._model.getValue(modelName.NICKNAME));
-            assertEquals(4092, _instance._model.getValue(modelName.UUID));
-            assertEquals(500, _instance._model.getValue(modelName.CREDIT));
-            assertEquals(10, _instance._model.getValue(modelName.REMAIN_TIME));
-            assertEquals(3, _instance._model.getValue(modelName.GAMES_STATE));
-            assertTrue(ArrayUtil.arraysAreEqual([], _instance._model.getValue(modelName.PLAYER_POKER)) );
-            assertTrue(ArrayUtil.arraysAreEqual([], _instance._model.getValue(modelName.BANKER_POKER)) );
-			
 			utilFun.Log("==============");
 			_instance.deal_card(CardType.PLAYER, ["1s"]);
 			assertTrue(ArrayUtil.arraysAreEqual(["1s"], _instance._model.getValue(modelName.PLAYER_POKER)) );
@@ -161,22 +134,6 @@ package tests
 			assertEquals(400, _instance._model.getValue(modelName.CREDIT));
 			assertEquals(12, _instance._model.getValue(modelName.ROUND_RESULT));
 			_instance.round_result();
-		}
-		
-		public function test_reaction():void
-		{
-			utilFun.Log("================= test_result");
-			
-			assertEquals("hhg4092", _instance._model.getValue(modelName.NICKNAME));
-            assertEquals(4092, _instance._model.getValue(modelName.UUID));
-            assertEquals(500, _instance._model.getValue(modelName.CREDIT));
-            assertEquals(10, _instance._model.getValue(modelName.REMAIN_TIME));
-            assertEquals(gameState.NEW_ROUND, _instance._model.getValue(modelName.GAMES_STATE));
-            assertTrue(ArrayUtil.arraysAreEqual([], _instance._model.getValue(modelName.PLAYER_POKER)) );
-            assertTrue(ArrayUtil.arraysAreEqual([], _instance._model.getValue(modelName.BANKER_POKER)) );
-			
-			//assertTrue(_instance.plaerType(new Event, 0);
-			//assertEquals(gameState.NEW_ROUND, _instance._BetModel._BetType));
 		}
 			
 	}

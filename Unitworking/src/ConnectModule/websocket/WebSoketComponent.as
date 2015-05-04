@@ -31,7 +31,7 @@ package ConnectModule.websocket
         public var dispatcher:Function;
 		
 		[Inject]
-		public var _MsgModel:MsgQueueModel;
+		public var _MsgModel:MsgQueue;
 		
 		[Inject]
 		public var _BetModel:BetModel;
