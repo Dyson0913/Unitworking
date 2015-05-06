@@ -22,11 +22,15 @@ package Model
 		   	_queue.push(msg.Value);
 		}
 		
-		
 		public function getMsg():Object
+		{			
+			return _queue[0];
+		}
+		
+		public function excutionMsg():Object
 		{
-			var msg:Object = _queue[0]
-			_queue.shift();				
+			var msg:Object = _queue[0];
+			_queue.shift();
 			return msg;
 		}
 		
