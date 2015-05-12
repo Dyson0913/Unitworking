@@ -27,6 +27,7 @@ package Model
 		
 		//view
 		public static const Loading:int  = Num++;		
+		public static const Lobby:int  = Num++;		
 		public static const Bet:int  = Num++;		
 		public static const Hud:int  = Num++;
 		

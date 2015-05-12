@@ -32,13 +32,10 @@ package tests
 		
 		protected override function setUp():void 
 		{
-			super.setUp();						
-			//addChild(_context.getObjectByType(LoadingView) as LoadingView);
-			//addChild(_context.getObjectByType(Lobby) as Lobby);
+			super.setUp();
 			addChild(_context.getObjectByType(betView) as betView);
-			//addChild(_context.getObjectByType(HudView) as HudView);
 			_instance = _context.getObject("Enter") as betView ;
-			_instance.FirstLoad();		
+			_instance.FirstLoad();
         }
 		
         protected override function tearDown():void 

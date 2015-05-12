@@ -38,10 +38,8 @@ package tests
 		protected override function setUp():void 
 		{
 			super.setUp();						
-			addChild(_context.getObjectByType(LoadingView) as LoadingView);
-			//addChild(_context.getObjectByType(Lobby) as Lobby);
-			addChild(_context.getObjectByType(betView) as betView);
-			//addChild(_context.getObjectByType(HudView) as HudView);
+			addChild(_context.getObjectByType(LoadingView) as LoadingView);			
+			addChild(_context.getObjectByType(betView) as betView);			
 			_instance = _context.getObject("Enter") as LoadingView;
         }
 		
@@ -53,7 +51,7 @@ package tests
 		
 		public function testInstantiated():void 
 		{
-			utilFun.Log("testInstantiated");
+			//utilFun.Log("testInstantiated");
             assertTrue(" instantiated", _instance is LoadingView);
         }
 		

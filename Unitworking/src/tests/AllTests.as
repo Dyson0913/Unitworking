@@ -19,7 +19,9 @@ package  tests
 			//addTest(new BetView_Test());
 			//addTest(new node_Test());
 			//addTest(new LinkList_Test());
-			addTest(new BetCommand_Test());
+			addTest(new LoadingView_Test());
+			//addTest(new BetCommand_Test());
+			//addTest(new BetCommand_Test());
         }
 	}
 

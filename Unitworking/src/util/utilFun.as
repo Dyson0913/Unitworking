@@ -165,6 +165,34 @@ package util
 			return BtnMouseFrame;
 		}
 		
+		public static function non_repeat_combination(list:Array, lenth:int ):Array
+		{			
+			
+			var arr:Array = [];
+			var this_conbination:Array = [list[start_idx], list[end_idx]];
+			Log("arr start= " + this_conbination);
+			for ( var i:int = 0; i < list.length ; i++)
+			{
+				if ( i > end_idx)
+				{
+					var conbi:Array = this_conbination.concat();
+					conbi.push(i);
+					arr.push( conbi);
+				}
+			}
+			
+			if ( end_idx-start_idx)
+			
+			if ( start_idx != list.length -lenth)
+			{
+				arr.push(non_repeat_combination(list,3,
+			}
+			
+			Log("arr= " + arr);
+			
+			return arr;
+		}
+		
 		public static function combinations(values:Array, length:uint):Array 
 	   {
             var i:uint, j:uint, result:Array, start:Array, end:Array, len:uint, innerLen:uint;

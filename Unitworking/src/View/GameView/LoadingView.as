@@ -42,7 +42,7 @@ package View.GameView
 		{
 			if (View.Value != modelName.Loading) return;
 			utilFun.Log("loading view enter");
-			prepare("_view",utilFun.GetClassByString(ResName.Loading_Scene) , this);
+			//prepare("_view",utilFun.GetClassByString(ResName.Loading_Scene) , this);
 			//utilFun.SetTime(connet, 2);
 			//test();
 			test2();
@@ -51,8 +51,8 @@ package View.GameView
 		
 		public function test2():void
 		{
-			var po:Array = ["0", "1", "2"];
-			var arr:Array = utilFun.combinations(po, 2);
+			var po:Array = ["0", "1", "2","3","4"];
+			var arr:Array = utilFun.non_repeat_combination(po, 3,0,1);
 			for (var i:int = 0; i < arr.length; i++)
 			{
 				var total:int = 0;
