@@ -7,7 +7,7 @@ package Interface
 	 */
 	public interface CollectionsInterface 
 	{
-		function lenth():int;
+		function length():int;
 	}
 	
 }

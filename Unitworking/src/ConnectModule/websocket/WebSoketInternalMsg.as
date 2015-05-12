@@ -6,10 +6,10 @@ package ConnectModule.websocket
 	 */
 	public class WebSoketInternalMsg 
 	{
-		
 		public static const CONNECT:String = "connect";
 		public static const CHOOSE_ROOM:String = "chooserroom";
 		public static const BET:String = "Bet";
+		public static const NO_CREDIT:String = "CreditNotEnough";
 		public static const BETRESULT:String = "Betresult";
 		
 		[Selector]

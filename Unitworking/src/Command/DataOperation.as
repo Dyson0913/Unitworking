@@ -49,14 +49,13 @@ package Command
 			return data;
 		}
 		
-		public function  array_idx(data_name:*, idx_name:*):* 
+		public function  array_idx(data_name:*, idx_name:*):*
 		{
 			var data:* = _model.getValue(data_name);
 			var idx:int = _model.getValue(idx_name);
 			
 			return data[idx];
 		}
-		
 	}
 
 }

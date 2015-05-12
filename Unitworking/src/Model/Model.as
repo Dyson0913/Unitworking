@@ -18,7 +18,7 @@ package Model
 		
 		[MessageHandler(type = "Model.ValueObject")]
 		public function Value(va:ValueObject):void
-		{			
+		{
 			putValue(va.selector, va.Value);
 		}
 		
@@ -29,7 +29,6 @@ package Model
 		
 		public function getValue(name:*):*
 		{
-			if ( _di.getValue(name) == undefined) return null;
 			return _di.getValue(name);
 		}
 	}

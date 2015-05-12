@@ -70,7 +70,7 @@ package tests
 			assertTrue( _instance.getValue(4) == true);
 			
 			_instance.clean()
-			assertEquals( 0, _instance.lenth());
+			assertEquals( 0, _instance.length());
         } 
     }   
 		

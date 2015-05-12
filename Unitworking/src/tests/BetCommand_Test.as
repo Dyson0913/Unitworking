@@ -87,31 +87,31 @@ package tests
 			clilent_check(1, 1, 100, 49900);
 			
 			utilFun.Log("============== bet 2");		
-			var bet:Object = { "betType": 2, 
+			var bet2:Object = { "betType": 2, 
 			                               "bet_amount":  _instance.get_total_bet(2) + _opration.array_idx("coin_list", "coin_selectIdx")
 			};
 			
-			_instance._Actionmodel.push(new ActionEvent(bet, "bet_action"));
+			_instance._Actionmodel.push(new ActionEvent(bet2, "bet_action"));
 			mockServer_check(2,100);
 			_instance.accept_bet();
 			clilent_check(2, 2, 100, 49800);			
 		
 			utilFun.Log("============== bet 3");		
-			var bet:Object = { "betType": 1, 
+			var bet3:Object = { "betType": 1, 
 			                               "bet_amount":  _instance.get_total_bet(1) + _opration.array_idx("coin_list", "coin_selectIdx")
 			};
 			
-			_instance._Actionmodel.push(new ActionEvent(bet, "bet_action"));
+			_instance._Actionmodel.push(new ActionEvent(bet3, "bet_action"));
 			mockServer_check(1,200);
 			_instance.accept_bet();
 			clilent_check(3, 1, 100, 49700);
 			
 			utilFun.Log("============== bet 4");		
-			var bet:Object = { "betType": 1, 
+			var bet4:Object = { "betType": 1, 
 			                               "bet_amount":  _instance.get_total_bet(1) + _opration.array_idx("coin_list", "coin_selectIdx")
 			};
 			
-			_instance._Actionmodel.push(new ActionEvent(bet, "bet_action"));
+			_instance._Actionmodel.push(new ActionEvent(bet4, "bet_action"));
 			mockServer_check(1,300);
 			_instance.accept_bet();
 			clilent_check(4, 1, 100, 49600);
@@ -121,7 +121,7 @@ package tests
 		public function test_clean():void 
 		{
 		    _instance.Clean_bet();
-			assertEquals(_instance._Bet_info.lenth(), 0);
+			assertEquals(_instance._Bet_info.length(), 0);
         } 
     }   
 		

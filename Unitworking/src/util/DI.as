@@ -6,7 +6,7 @@ package util
 	 * DI
 	 * @author hhg
 	 */
-	public class DI  implements CollectionsInterface
+	public class DI implements CollectionsInterface
 	{
 		private var _dic:Dictionary = new Dictionary();
 		
@@ -34,15 +34,16 @@ package util
 			_dic = new Dictionary();
 		}
 		
-		public function lenth():int
+		public function length():int
 		{
 			var n:int = 0;
 			for (var ke:* in _dic)
 			{
-				n++;
+			    n++;
 			}
 			return n;
 		}
+		
 	}
 
 }

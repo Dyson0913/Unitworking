@@ -3,7 +3,6 @@ package View.Viewutil
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	
 	import util.utilFun;
 	/**
 	 * ...

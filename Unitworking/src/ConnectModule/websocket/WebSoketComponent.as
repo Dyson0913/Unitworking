@@ -9,14 +9,14 @@ package ConnectModule.websocket
 	import flash.display.Sprite;
 	import flash.net.registerClassAlias;
 	import flash.utils.ByteArray;
-	import flash.system.Security;
-	import Model.*;	
+	import flash.system.Security;	
+	import Model.*;
+	import Model.valueObject.Intobject;
 	
-	import Model.valueObject.*;
-		
+	import Command.ViewCommand;
 	import View.GameView.CardType;
 	
-	import util.utilFun;	
+	import util.utilFun;
 	import ConnectModule.websocket.Message
 
 
@@ -31,10 +31,10 @@ package ConnectModule.websocket
         public var dispatcher:Function;
 		
 		[Inject]
-		public var _MsgModel:MsgQueue;
+		public var _msgModel:MsgQueue;
 		
 		[Inject]
-		public var _BetModel:BetModel;
+		public var _actionqueue:ActionQueue;
 		
 		private var websocket:WebSocket;
 		
@@ -81,13 +81,13 @@ package ConnectModule.websocket
 				result = JSON.decode(event.message.utf8Data);			
 			}
 			
-			_MsgModel.push(result);
+			_msgModel.push(result);
 		}
 		
 		[MessageHandler(type = "Model.ModelEvent", selector = "popmsg")]
 		public function msghandler():void
 		{
-			   var result:Object  = _MsgModel.getMsg();
+			   var result:Object  = _msgModel.getMsg();
 				switch(result.message_type)
 				{
 					case Message.MSG_TYPE_LOGIN:
@@ -129,25 +129,24 @@ package ConnectModule.websocket
 					
 					case Message.MSG_TYPE_INTO_GAME:
 					{						
-						//進入 遊戲,得到第一個畫面(不論半途或一開始
+						//進入 遊戲,得到第一個畫面(不論半途或一開始						
+						
 						
 						dispatcher(new ValueObject( result.inside_game_info.player_info.nickname,modelName.NICKNAME) );
 						dispatcher(new ValueObject( result.inside_game_info.player_info.userid,modelName.UUID) );
 						dispatcher(new ValueObject( result.inside_game_info.player_info.credit,modelName.CREDIT) );
 						
 						dispatcher(new ValueObject(  result.inside_game_info.remain_time,modelName.REMAIN_TIME) );						
-						dispatcher(new ValueObject(  result.inside_game_info.games_state, modelName.GAMES_STATE) );
+						dispatcher(new ValueObject(  result.inside_game_info.games_state, modelName.GAMES_STATE) );						
 						
-						//utilFun.Log("time =" + result.inside_game_info.remain_time);
+						dispatcher( new ValueObject(result.inside_game_info.game_info["player_card_list"], modelName.PLAYER_POKER) );
+                        dispatcher( new ValueObject(result.inside_game_info.game_info["banker_card_list"], modelName.BANKER_POKER) );                        
 						
-                        dispatcher( new ValueObject(result.inside_game_info.game_info["player_card_list"], modelName.PLAYER_POKER) );
-                        dispatcher( new ValueObject(result.inside_game_info.game_info["banker_card_list"], modelName.BANKER_POKER) );
+						dispatcher(new Intobject(modelName.Bet, ViewCommand.SWITCH) );
+						//dispatcher(new Intobject(modelName.Hud, ViewCommand.ADD)) ;
 						
-						
-						//dispatcher(new ViewState(ViewState.Bet,ViewState.ENTER) );
-						//dispatcher(new ViewState(ViewState.Loading,ViewState.LEAVE) );
 						dispatcher(new ModelEvent("playerpoker"));
-						dispatcher(new ModelEvent("bankerpoker"));
+						dispatcher(new ModelEvent("bankerpoker"));						
 						
 						break;
 					}
@@ -175,7 +174,8 @@ package ConnectModule.websocket
 						{							
 						    dispatcher( new ValueObject(card, modelName.BANKER_POKER) );
 							dispatcher(new ModelEvent("bankerpoker"));
-						}
+						}					
+						
 						
 						break;
 					}					
@@ -188,12 +188,13 @@ package ConnectModule.websocket
 						}
 						else
 						{
+							_actionqueue.dropMsg();
 							//error handle
 						}
 						break;
 					}
 					case Message.MSG_TYPE_ROUND_INFO:
-					{
+					{						
 						dispatcher( new ValueObject(result.bet_amount,modelName.BET_AMOUNT));
 						dispatcher( new ValueObject(result.settle_amount,modelName.SETTLE_AMOUNT));
 						
@@ -210,11 +211,12 @@ package ConnectModule.websocket
 		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="Bet")]
 		public function SendBet():void
 		{
+			var ob:Object = _actionqueue.getMsg();
 			var bet:Object = { "message_type":Message.MSG_TYPE_BET, 
 			                               "serial_no":0,
 										   "game_type":1,
-										   "bet_type":_BetModel._BetType,
-										   "amount":_BetModel._Betcredit };
+										   "bet_type":ob["betType"],
+										    "amount":ob["bet_amount"]};
 										   
 			SendMsg(bet);
 		}

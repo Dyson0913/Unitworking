@@ -13,6 +13,7 @@ package util
 	
 	import com.hexagonstar.util.debug.Debug;
 	import View.Viewutil.MouseBehavior;
+	import Res.ResName;
 	
 	/**
 	 * 常用功能
@@ -163,6 +164,36 @@ package util
 			
 			return BtnMouseFrame;
 		}
+		
+		public static function combinations(values:Array, length:uint):Array 
+	   {
+            var i:uint, j:uint, result:Array, start:Array, end:Array, len:uint, innerLen:uint;
+            if (length > values.length || length <= 0) {
+                return [];
+            }
+            if (length == values.length) {
+                return values;
+            }
+            if (length == 1) {
+                result = [];
+                len = values.length;
+                for (i = 0; i < len; ++i) {
+                    result[i] = [values[i]];
+                }
+                return result;
+            }
+            result = [];
+            len = values.length - length;
+            for (i = 0; i < len; ++i) {
+                start = values.slice(i, i + 1);
+                end = combinations(values.slice(i + 1), length - 1);
+                innerLen = end.length;
+                for (j = 0; j < innerLen; ++j) {
+                    result.push(start.concat(end[j]));
+                }
+            }
+            return result;
+        }		
 		
 		//條件 0 base (flash為1base 影格 , CurFrame -1和 Frame + 1在於調整為0 base 
 		//FrameCycle = 有幾格在循環
