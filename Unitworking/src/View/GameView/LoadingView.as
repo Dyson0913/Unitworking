@@ -44,15 +44,17 @@ package View.GameView
 			utilFun.Log("loading view enter");
 			//prepare("_view",utilFun.GetClassByString(ResName.Loading_Scene) , this);
 			//utilFun.SetTime(connet, 2);
-			//test();
-			test2();
+			test();
+			//test2();
 			
 		}
 		
 		public function test2():void
-		{
+		{			
+			//1 沒處理
 			var po:Array = ["0", "1", "2","3","4"];
-			var arr:Array = utilFun.non_repeat_combination(po, 3,0,1);
+			var arr:Array = utilFun.easy_combination(po, 3);
+			utilFun.Log("arr = "+arr.length);
 			for (var i:int = 0; i < arr.length; i++)
 			{
 				var total:int = 0;
@@ -66,21 +68,22 @@ package View.GameView
 		public function test():void
 		{
 			prepare(modelName.PLAYER_POKER, new MultiObject());
-			var playerpoker:Array =   ["3c", "7h", "kd", "3h", "1h"];
-			
+			var playerpoker:Array =   ["5c", "4h", "1d", "7h", "kh"];		
 			var playerCon:MovieClip = prepare("playerpokerCon", new MovieClip() , this);
 			playerCon.x = 480;
 			playerCon.y = 240;
-			prepare(modelName.PLAYER_POKER, new MultiObject());		
+			
+			var pokerlist:MultiObject = Get(modelName.PLAYER_POKER)			
+			
 			pokerlist.CleanList();
 			pokerlist.CustomizedFun = pokerUtil.showPoker;
 			pokerlist.CustomizedData = playerpoker;
 			pokerlist.Create_by_list(playerpoker.length,  [ResName.Poker], 0 , 0, playerpoker.length, 163, 123, "Bet_", Get("playerpokerCon"));
-			
-			
+						
 			var best3:Array = pokerUtil.newnew_judge( playerpoker);
 			var pokerlist:MultiObject = Get(modelName.PLAYER_POKER)
 			pokerUtil.poer_shift(pokerlist.ItemList, best3);
+			
 			
 		}		
 		

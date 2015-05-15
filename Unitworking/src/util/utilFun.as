@@ -165,63 +165,94 @@ package util
 			return BtnMouseFrame;
 		}
 		
-		public static function non_repeat_combination(list:Array, lenth:int ):Array
-		{			
-			
-			var arr:Array = [];
-			var this_conbination:Array = [list[start_idx], list[end_idx]];
-			Log("arr start= " + this_conbination);
-			for ( var i:int = 0; i < list.length ; i++)
+		public static function easy_combination(list:Array, lenght:int):Array
+		{
+			var result:Array = [];
+			var n:int = lenght -1;
+			var fixelemnt:Array = [];
+			for ( var i:int = 0; i < n; i++)
 			{
-				if ( i > end_idx)
+				fixelemnt.push(list[i]);
+			}
+			
+			var rest:Array = Get_restItem(list, fixelemnt);
+			while (fixelemnt[0] != list[list.length - lenght])
+			{
+				
+				//one set conbination
+				for (var i:int = 0; i < rest.length; i++)
 				{
-					var conbi:Array = this_conbination.concat();
-					conbi.push(i);
-					arr.push( conbi);
+					var temp:Array = [];
+					temp = fixelemnt.concat();
+					if ( rest[i] <= fixelemnt[fixelemnt.length - 1]) continue;
+					temp.push (rest[i]);
+					result.push(temp);
+				}
+				rest.shift();
+				
+				//bound judge
+				fixelemnt[fixelemnt.length - 1] ++;
+				if ( fixelemnt[fixelemnt.length - 1] == list.length -1)
+				{
+					fixelemnt[fixelemnt.length - 1] --;
+					averagedistance(fixelemnt);
+					rest = Get_restItem(list, fixelemnt);					
 				}
 			}
 			
-			if ( end_idx-start_idx)
-			
-			if ( start_idx != list.length -lenth)
+			//last combi
+			for (var i:int = 0; i < rest.length; i++)
 			{
-				arr.push(non_repeat_combination(list,3,
+				var temp:Array = [];
+				temp = fixelemnt.concat();
+				if ( rest[i] <= fixelemnt[fixelemnt.length - 1]) continue;
+				temp.push (rest[i]);
+				result.push(temp);
 			}
 			
-			Log("arr= " + arr);
-			
-			return arr;
+			return result;
 		}
 		
-		public static function combinations(values:Array, length:uint):Array 
-	   {
-            var i:uint, j:uint, result:Array, start:Array, end:Array, len:uint, innerLen:uint;
-            if (length > values.length || length <= 0) {
-                return [];
-            }
-            if (length == values.length) {
-                return values;
-            }
-            if (length == 1) {
-                result = [];
-                len = values.length;
-                for (i = 0; i < len; ++i) {
-                    result[i] = [values[i]];
-                }
-                return result;
-            }
-            result = [];
-            len = values.length - length;
-            for (i = 0; i < len; ++i) {
-                start = values.slice(i, i + 1);
-                end = combinations(values.slice(i + 1), length - 1);
-                innerLen = end.length;
-                for (j = 0; j < innerLen; ++j) {
-                    result.push(start.concat(end[j]));
-                }
-            }
-            return result;
-        }		
+		/**
+		 * 
+		 * @param	arr [0,2,3,5]  -> [0,2,4,5] -> [0,3,4,5]-> [1,2,3,4]
+		 */
+		public static function averagedistance(arr:Array):void
+		{			
+			for ( var i:int = arr.length; i > 0 ; i --)
+			{
+				if ( parseInt(arr[i]) - parseInt(arr[i - 1] ) >= 2)
+				{
+					var k:int = parseInt( arr[i - 1]);
+					k++;
+					
+					arr[i - 1] = k.toString();
+					
+					if ( i - 1 == 0)
+					{
+						for ( var j:int = 0; j < arr.length ; j++ ) arr[j] = k++;	
+					}
+					return;
+				}				
+			}
+		}
+		
+		/**
+		 * @param	origi [10,11,12,13,14]
+		 * @param	own  [0,1,3]
+		 * @return   [12,14]
+		 */
+		public static function Get_restItem(origi:Array,own:Array):Array
+		{
+			var rest_item:Array = [];
+			var n:int = origi.length;
+		  	for (var i:int = 0; i < n; i++)
+			{				
+				if (  own.indexOf(origi[i]) == -1 )  rest_item.push(origi[i]);
+			}
+			
+			return rest_item;
+		}
 		
 		//條件 0 base (flash為1base 影格 , CurFrame -1和 Frame + 1在於調整為0 base 
 		//FrameCycle = 有幾格在循環
