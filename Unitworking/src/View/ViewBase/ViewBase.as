@@ -61,6 +61,12 @@ package View.ViewBase
 			return utilFun.prepare(name,ob , _ViewDI, container);
 		}
 		
+		protected function Gethud(name:*):*
+		{
+			//hudview
+			return _ViewDI.getValue(name);
+		}
+		
 	}
 
 }
